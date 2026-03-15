@@ -38,20 +38,20 @@ const getBadgeColor = (label) =>{
     };
     case "help wanted": return{
       color:"bg-yellow-100 text-yellow-700",
-      icon:"fa-utility fa-semibold fa-life-ring"
+      icon:"fa-regular fa-life-ring"
     };
     case "enhancement": return{
       color:"bg-green-100 text-green-700",
-      icon:""
+      icon:"fa-regular fa-stars"
     } ;
     case "documentation": return{
       color:"bg-blue-100 text-blue-700",
-      icon:""
+      icon:"fa-solid fa-sparkles"
 
     };
     case "good first issue": return{
       color:"bg-purple-100 text-purple-700",
-      icon:""
+      icon:"fa-sharp fa-regular fa-circle-exclamation"
 
     };
     default: return{
@@ -59,20 +59,37 @@ const getBadgeColor = (label) =>{
         icon: "fa-solid fa-flag"
   }
 }};
-const getPriorityStyle = (priority) =>{
-  switch(priority.toLowerCase()){
-    case "high": return "bg-red-100 text-red-700"; 
-    case "medium": return "bg-yellow-100 text-yellow-700";
-    default: return "bg-gray-100 text-gray-700";
-  }
+const getPriorityStyle = (priority) => {
+  switch (priority.toLowerCase()) {
+    case "high":
+      return {
+        color: "bg-red-100 text-red-700",
+      };
 
-}
+    case "medium":
+      return {
+        color: "bg-yellow-100 text-yellow-700",
+      };
+
+    default:
+      return {
+        color: "bg-gray-100 text-gray-700",
+      };
+  }
+};
 const getImage=(status)=>{
     if(status==="open"){
       return "assets/Open-Status.png"; 
     }
     else{ 
       return "assets/Closed- Status .png" } };
+ const getBorderColor = (status) => {
+    if (status === "open") {
+      return "border-t-4 border-green-500";
+    } else {
+      return "border-t-4 border-purple-500";
+    }
+  };
 
 const searchInput = document.getElementById("searchInput");
   searchInput?.addEventListener("keyup", () => {
@@ -104,7 +121,8 @@ async function loadIssues() {
 
     issues.forEach((issue) => {
       const card = document.createElement("div");
-      card.className = "bg-white rounded-lg shadow p-4 border mb-3 w-full";
+      card.className = `bg-white rounded-lg shadow p-4 border mb-3 w-full ${getBorderColor(issue.status)}`;
+      
 
       card.innerHTML = `
           <div class="card bg-base-100 shadow-md p-5 border">
@@ -126,7 +144,7 @@ async function loadIssues() {
         <p class="text-sm text-gray-500 mt-2">
           ${issue.description}
         </p>
-
+       <div class="flex flex-wrap items-center gap-2 mt-3">
        ${issue.labels?.map(label=>{
             const style = getBadgeColor(label);
             return `
@@ -135,6 +153,7 @@ async function loadIssues() {
               ${label}
             </span>`;
           }).join("")}
+          </div>
 
         <div class=" mt-4 text-sm text-gray-400">
         <div class="flex gap-2">
