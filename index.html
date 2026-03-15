@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
 </head>
-<body class="min-h-screen flex justify-center items-center m-auto bg-gray-100" style="font-family: Geist, sans-serif;">
+<body class="min-h-screen flex justify-center items-center m-auto bg-gray-100">
     
     <div class="card bg-white p-6 md:p-8 rounded-lg shadow-md w-full max-w-md">
         
@@ -26,14 +26,11 @@
                 <span class="label-text text-black font-medium mb-1">Username</span>
             </label>
             <input
+                id="username"
                 type="text"
                 class="input validator w-full"
                 required
                 placeholder="Enter Username"
-                pattern="[A-Za-z][A-Za-z0-9\-]*"
-                minlength="3"
-                maxlength="30"
-                title="Only letters, numbers or dash"
             />
             <p class="text-[#4A00FF] mt-2 text-sm">Default: admin</p>
         </div>
@@ -43,21 +40,19 @@
                 <span class="label-text text-black font-medium mb-1">Password</span>
             </label>
             <input
+                id="password"
                 type="password"
                 class="input validator w-full"
                 required
                 placeholder="Enter Password"
-                minlength="8"
-                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
             />
             <p class="text-[#4A00FF] mt-2 text-sm">Default: admin123</p>
         </div>
 
-        <div class="w-full bg-[#4A00FF] p-3 rounded-md text-center mt-2">
-           <!-- <a href="./home.html" class="text-white font-medium"> Sign In
-           </a> -->
+        <div class="w-full bg-[#4A00FF] p-3 rounded-md text-center mt-2 hover:bg-[#4A00FF]">
+          <button type="button" onclick="login()" class="text-white">Sign In</button>
         </div>
+         <p id="message" class="text-center text-red-500 mt-2"></p>
 
         <div class="flex items-center my-5">
             <div class="flex-1 h-px bg-gray-300"></div>
@@ -75,6 +70,7 @@
         </div>
 
     </div>
-    
+  <script src="./script.js"></script>  
 </body>
+
 </html>
