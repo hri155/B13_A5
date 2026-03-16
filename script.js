@@ -48,7 +48,6 @@ document.getElementById("closedBtn")?.addEventListener("click", () => {
   setActiveButton("closedBtn");
   loadIssues();
 });
-setActiveButton("allBtn");
 
 const getBadgeColor = (label) =>{
   switch (label.toLowerCase()) {
