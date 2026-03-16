@@ -24,27 +24,26 @@
     <img src="./assets/github-logo.png" alt="github logo" class="w-7 h-7 sm:w-8 sm:h-8">
     <h1 class="text-lg sm:text-xl font-semibold">GitHub Issues Tracker</h1>
   </div>
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
 
-  <div class="flex items-center justify-between gap-2 sm:gap-3">
-  <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
-    <button onclick="" class="sm:hidden p-2 rounded-lg hover:bg-gray-100">
-      <i class="fa-solid fa-magnifying-glass"></i>
-    </button>
+  <div id="searchWraper" class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
 
-    <div class="relative hidden w-full sm:block sm:w-auto">
-      <i class="fa-solid fa-magnifying-glass absolute left-3 top-3/4 -translate-y-1/2 text-gray-400"></i>
-      <input
-        id="searchInput"
-        type="text"
-        placeholder="Search issues..."
-        class="w-full sm:w-72 rounded-lg bg-gray-50 pl-10 pr-3 py-2 text-sm outline-none focus:ring-2 focus:ring-violet-500"
-      />
-    </div>
+  <button id="mobileSearch" class="sm:hidden p-2 rounded-lg hover:bg-gray-100">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+  <div id="searchBox" class="relative hidden w-full sm:block sm:w-auto">
+    <i class="fa-solid fa-magnifying-glass absolute left-3 top-3/4 -translate-y-1/2 text-gray-400"></i>
+    <input
+      id="searchInput"
+      type="text"
+      placeholder="Search issues..."
+      class="w-full sm:w-72 rounded-lg bg-gray-50 pl-10 pr-3 py-2 text-sm outline-none focus:ring-2 focus:ring-violet-500" />
   </div>
-
-  <button class="w-full sm:w-auto rounded-lg bg-[#4A00FF] px-3 sm:px-4 py-2 text-sm font-medium text-white hover:bg-violet-700">
+  </div>
+  <button class="w-full sm:w-auto rounded-lg bg-[#4A00FF] px-4 py-2 text-sm font-medium text-white hover:bg-violet-700">
     + New Issue
   </button>
+
 </div>
 
 </header>
@@ -85,6 +84,50 @@
 </div>
 
 <div id="issueCards" class="issue_card bg-[#f8fafcf4] max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+
+<dialog id="issueModal" class="modal">
+  <div class="modal-box max-w-2xl">
+    <h3 id="modalTitle" class="text-xl font-bold mb-2"></h3>
+    <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+    <span id="modalStatus"
+      class="px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-700">
+      Opened
+    </span>
+
+    <span id="modalAuthor"></span> 
+    <span id="modalDate"></span>
+  </div>
+
+<div id="modalLabels" class="flex flex-wrap gap-2 mb-4"></div>
+
+<p id="modalDesc" class="text-gray-600 mb-6"></p>
+
+<div class="bg-gray-50 rounded-lg p-4 flex justify-between">
+  <div>
+    <p class="text-sm text-gray-400">Assignee:</p>
+    <p id="modalAssignee" class="font-semibold"></p>
+  </div>
+
+  <div>
+    <p class="text-sm text-gray-400">Priority:</p>
+    <span id="modalPriority"
+      class="px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-700">
+    </span>
+  </div>
+</div>
+
+<div class="modal-action">
+  <form method="dialog">
+    <button class="px-4 py-2 rounded-lg bg-[#4A00FF] text-white">
+      Close
+    </button>
+  </form>
+</dialog>
+
+
+<div id="loadingSpinner" class="h-[60vh] hidden justify-center items-center">
+  <span class="loading loading-spinner loading-md"></span>
+</div>
 
 </section>
 <script src="./script.js"></script>

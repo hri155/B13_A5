@@ -11,24 +11,44 @@ function login() {
     document.getElementById("message").innerText = "Invalid Username or Password";
   }
 }
+function setActiveButton(activeId) {
 
+  const buttons = ["allBtn","openBtn","closedBtn"];
+
+  buttons.forEach(id => {
+    const btn = document.getElementById(id);
+
+    btn.classList.remove("bg-[#4A00FF]","text-white");
+    btn.classList.add("bg-gray-100","text-gray-700");
+  });
+
+  const activeBtn = document.getElementById(activeId);
+
+  activeBtn.classList.remove("bg-gray-100","text-gray-700");
+  activeBtn.classList.add("bg-[#4A00FF]","text-white");
+
+}
 
 let currentFilter = "all";
 
 document.getElementById("allBtn")?.addEventListener("click", () => {
   currentFilter = "all";
+  setActiveButton("allBtn");
   loadIssues();
 });
 
 document.getElementById("openBtn")?.addEventListener("click", () => {
   currentFilter = "open";
+  setActiveButton("openBtn");
   loadIssues();
 });
 
 document.getElementById("closedBtn")?.addEventListener("click", () => {
   currentFilter = "closed";
+  setActiveButton("closedBtn");
   loadIssues();
 });
+setActiveButton("allBtn");
 
 const getBadgeColor = (label) =>{
   switch (label.toLowerCase()) {
@@ -46,12 +66,12 @@ const getBadgeColor = (label) =>{
     } ;
     case "documentation": return{
       color:"bg-blue-100 text-blue-700",
-      icon:"fa-solid fa-sparkles"
+      icon:"fa-duotone fa-regular fa-book-blank"
 
     };
     case "good first issue": return{
       color:"bg-purple-100 text-purple-700",
-      icon:"fa-sharp fa-regular fa-circle-exclamation"
+      icon:"fa-regular fa-circle-exclamation"
 
     };
     default: return{
@@ -90,13 +110,62 @@ const getImage=(status)=>{
       return "border-t-4 border-purple-500";
     }
   };
+const mobileSearchBtn = document.getElementById("mobileSearch");
+const searchBox = document.getElementById("searchBox");
 
+mobileSearchBtn?.addEventListener("click", () => {
+  searchBox.classList.toggle("hidden");
+
+  if (!searchBox.classList.contains("hidden")) {
+    document.getElementById("searchInput").focus();
+  }
+});
 const searchInput = document.getElementById("searchInput");
   searchInput?.addEventListener("keyup", () => {
   loadIssues();
 });
+const loadingSpinner=document.getElementById("loadingSpinner");
+
+function IssueModal(issue){
+
+  const modal = document.getElementById("issueModal");
+
+  document.getElementById("modalTitle").innerText = issue.title;
+
+  document.getElementById("modalDesc").innerText = issue.description;
+
+  document.getElementById("modalAuthor").innerText =
+  "Opened by " + issue.author;
+
+  document.getElementById("modalDate").innerText =
+    issue.createdAt;
+
+  document.getElementById("modalAssignee").innerText =
+    issue.author;
+
+  document.getElementById("modalPriority").innerText =
+    issue.priority.toUpperCase();
+
+  const labels = document.getElementById("modalLabels");
+
+  labels.innerHTML = issue.labels?.map(label=>{
+    const style = getBadgeColor(label);
+
+    return `
+      <span class="px-2 py-1 flex items-center gap-1 rounded-full text-xs ${style.color}">
+        <i class="${style.icon}"></i>
+        ${label}
+      </span>
+    `;
+
+  }).join("");
+
+  modal.showModal();
+}
 
 async function loadIssues() {
+  loadingSpinner.classList.remove("hidden");
+  loadingSpinner.classList.add("flex");
   const searchText = searchInput?.value.trim();
   let url = "https://phi-lab-server.vercel.app/api/v1/lab/issues";
 
@@ -123,7 +192,6 @@ async function loadIssues() {
       const card = document.createElement("div");
       card.className = `bg-white rounded-lg shadow p-4 border mb-3 w-full ${getBorderColor(issue.status)}`;
       
-
       card.innerHTML = `
           <div class="card bg-base-100 shadow-md p-5 border">
 
@@ -133,7 +201,6 @@ async function loadIssues() {
                   const p = getPriorityStyle(issue.priority);
                   return `
                   <span class="px-2 py-1 flex items-center gap-1 text-xs font-semibold rounded-full ${p.color}">
-                    <i class="${p.icon}"></i>
                     ${issue.priority.toUpperCase()}
                   </span>`;
                 })()}
@@ -165,15 +232,22 @@ async function loadIssues() {
         </div>
           
        </div>
-
-      </div>
-      `;
-
+    </div>
+   `;
       issueCards.appendChild(card);
+      card.addEventListener("click", () => {
+      IssueModal(issue);
+      });
     });
-  } catch (error) {
+  }
+  
+  catch (error) {
     console.error("Error loading issues:", error);
     issueCards.innerHTML = `<p class="text-red-500">Failed to load issues</p>`;
+  }
+   finally {
+    loadingSpinner.classList.remove("flex");
+    loadingSpinner.classList.add("hidden");
   }
 }
 
